@@ -1,7 +1,7 @@
 package client
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/bestk/dmxsmart-client/config"
 	"github.com/bestk/dmxsmart-client/logger"
@@ -24,8 +24,30 @@ func NewDMXSmartClient(configPath string) (*DMXSmartClient, error) {
 	}
 
 	if cfg.Account == "" || cfg.Password == "" {
-		return nil, fmt.Errorf("Account or password is empty")
+		return nil, errors.New("account or password is empty")
 	}
+
+	// 初始化日志
+	logger.Init()
+
+	// 创建服务
+	services := service.NewServices(cfg)
+	services.SetLogger(logger.Logger)
+
+	return &DMXSmartClient{
+		services: services,
+		config:   cfg,
+	}, nil
+}
+
+// NewDMXSmartClientWithConfig 使用配置结构体创建新的DMXSmart客户端
+func NewDMXSmartClientWithConfig(cfg *config.ConfigStruct) (*DMXSmartClient, error) {
+
+	if cfg.Account == "" || cfg.Password == "" {
+		return nil, errors.New("account or password is empty")
+	}
+
+	config.GlobalConfig = cfg
 
 	// 初始化日志
 	logger.Init()
