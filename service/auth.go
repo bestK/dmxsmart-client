@@ -45,22 +45,17 @@ func (s *AuthService) GetCaptcha() (*model.CaptchaResponse, error) {
 
 	var result model.CaptchaResponse
 
-	resp, err := s.client.httpClient.R().
-		SetQueryParam("lang", "zh-CN").
-		SetHeader("Accept", "application/json, text/plain, */*").
-		SetHeader("Referer", fmt.Sprintf("%s/user/login", BaseURL)).
-		SetResult(&result).
-		Get(url)
+	err := s.client.makeRequest(http.MethodGet, url, nil, &result)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get captcha: %w", err)
 	}
 
-	if resp.StatusCode() != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode())
+	if result.Success {
+		return &result, nil
 	}
 
-	return &result, nil
+	return nil, fmt.Errorf("failed to get captcha: %s", result.ErrorMessage)
 }
 
 // Login 执行登录操作
@@ -74,7 +69,7 @@ func (s *AuthService) Login(username, password, captcha, uuid string) (*model.Lo
 	}
 
 	// 构建登录请求
-	loginReq := model.LoginRequest{
+	body := model.LoginRequest{
 		Username:    username,
 		Password:    encryptedPassword,
 		Captcha:     captcha,
@@ -85,21 +80,15 @@ func (s *AuthService) Login(username, password, captcha, uuid string) (*model.Lo
 	}
 
 	var result model.LoginResponse
-	// 发送登录请求
-	resp, err := s.client.httpClient.R().
-		SetHeader("Accept", "application/json, text/plain, */*").
-		SetHeader("Referer", fmt.Sprintf("%s/user/login", BaseURL)).
-		SetHeader("Cookie", "locale=zh-CN").
-		SetBody(loginReq).
-		SetResult(&result).
-		Post(url)
+
+	err = s.client.makeRequest(http.MethodPost, url, body, &result)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to send login request: %w", err)
 	}
 
-	if resp.StatusCode() != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode())
+	if !result.Success {
+		return nil, fmt.Errorf("login failed: %s", result.ErrorMessage)
 	}
 
 	// 如果登录成功，更新客户端的 token

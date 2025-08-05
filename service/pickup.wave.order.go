@@ -38,19 +38,10 @@ func (s *PickupWaveService) GetWaitingPickOrders(page, pageSize int, customerIds
 
 	var result model.WaitingPickOrderResponse
 
-	resp, err := s.client.httpClient.R().
-		SetBody(map[string]string{
-			"keyword": "",
-		}).
-		SetResult(&result).
-		Post(fullURL)
+	err := s.client.makeRequest(http.MethodGet, fullURL, nil, &result)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get waiting pick orders: %w", err)
-	}
-
-	if resp.StatusCode() != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode())
 	}
 
 	if !result.Success {
@@ -79,16 +70,14 @@ func (s *PickupWaveService) CreatePickupWave(isAll bool, pickupType int, isOutbo
 
 	var result model.CreatePickupWaveResponse
 
-	resp, err := s.client.httpClient.R().
-		SetResult(&result).
-		Post(fullURL)
+	err := s.client.makeRequest(http.MethodPost, fullURL, nil, &result)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create pickup wave: %w", err)
 	}
 
-	if resp.StatusCode() != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode())
+	if !result.Success {
+		return nil, fmt.Errorf("create pickup wave failed: %s", result.ErrorMessage)
 	}
 
 	return &result, nil
