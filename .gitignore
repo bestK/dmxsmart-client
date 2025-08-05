@@ -1,2 +1,6 @@
 config.yaml
 logs/*
+
+.idea/*
+.vscode/*
+
