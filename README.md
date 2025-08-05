@@ -91,10 +91,7 @@ func main() {
     }
 
     // 执行自动登录（包含OCR验证码识别）
-    resp, err := client.services.Auth.LoginWithAutoOCR(
-        client.config.Account,
-        client.config.Password,
-    )
+    resp, err := client.services.Auth.LoginWithAutoOCR()
     if err != nil {
         panic(err)
     }

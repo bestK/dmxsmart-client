@@ -59,18 +59,18 @@ func (s *AuthService) GetCaptcha() (*model.CaptchaResponse, error) {
 }
 
 // Login 执行登录操作
-func (s *AuthService) Login(username, password, captcha, uuid string) (*model.LoginResponse, error) {
+func (s *AuthService) Login(captcha, uuid string) (*model.LoginResponse, error) {
 	url := "/api/login/authenticate"
 
 	// 加密密码
-	encryptedPassword, err := encryptPassword(password)
+	encryptedPassword, err := encryptPassword(s.client.config.Password)
 	if err != nil {
 		return nil, fmt.Errorf("failed to encrypt password: %w", err)
 	}
 
 	// 构建登录请求
 	body := model.LoginRequest{
-		Username:    username,
+		Username:    s.client.config.Account,
 		Password:    encryptedPassword,
 		Captcha:     captcha,
 		UUID:        uuid,
@@ -100,7 +100,7 @@ func (s *AuthService) Login(username, password, captcha, uuid string) (*model.Lo
 }
 
 // LoginWithAutoOCR 自动识别验证码并登录，失败时最多重试3次
-func (s *AuthService) LoginWithAutoOCR(username, password string) (*model.LoginResponse, error) {
+func (s *AuthService) LoginWithAutoOCR() (*model.LoginResponse, error) {
 	maxRetries := 3
 	var lastErr error
 
@@ -125,7 +125,7 @@ func (s *AuthService) LoginWithAutoOCR(username, password string) (*model.LoginR
 		}
 
 		// 使用识别出的验证码进行登录
-		resp, err := s.Login(username, password, captchaText, captchaResp.Data.UUID)
+		resp, err := s.Login(captchaText, captchaResp.Data.UUID)
 		if err != nil {
 			lastErr = fmt.Errorf("attempt %d: failed to login: %w", attempt+1, err)
 			continue

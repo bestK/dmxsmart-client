@@ -16,7 +16,7 @@ func TestLoginWithAutoOCR(t *testing.T) {
 	}
 
 	// 执行登录测试
-	resp, err := client.services.Auth.LoginWithAutoOCR(client.config.Account, client.config.Password)
+	resp, err := client.services.Auth.LoginWithAutoOCR()
 	if err != nil {
 		t.Errorf("LoginWithAutoOCR() error = %v", err)
 		return
