@@ -9,15 +9,16 @@ import (
 
 // Config represents the configuration structure
 type ConfigStruct struct {
-	Account     string `yaml:"account"`
-	Password    string `yaml:"password"`
-	AccessToken string `yaml:"access_token"`
-	WarehouseID int    `yaml:"warehouse_id"`
-	CustomerIDs []int  `yaml:"customer_ids"`
-	OcrEndpoint string `yaml:"ocr_endpoint"`
-	Timeout     int    `yaml:"timeout"`
-	Debug       bool   `yaml:"debug"`
-	LogDir      string `yaml:"log_dir"`
+	Account            string `yaml:"account"`
+	Password           string `yaml:"password"`
+	AccessToken        string `yaml:"access_token"`
+	WarehouseID        int    `yaml:"warehouse_id"`
+	CustomerIDs        []int  `yaml:"customer_ids"`
+	OcrEndpoint        string `yaml:"ocr_endpoint"`
+	Timeout            int    `yaml:"timeout"`
+	Debug              bool   `yaml:"debug"`
+	LogDir             string `yaml:"log_dir"`
+	OverwriteConfToken bool   `yaml:"overwrite_conf_token"`
 }
 
 var GlobalConfig *ConfigStruct
@@ -52,6 +53,8 @@ func SaveConfig() error {
 	if err := os.WriteFile(ConfigPath, data, 0644); err != nil {
 		return fmt.Errorf("failed to write config file: %w", err)
 	}
+
+	fmt.Println("Config saved successfully")
 
 	return nil
 }

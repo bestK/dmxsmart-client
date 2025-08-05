@@ -60,6 +60,9 @@ func (c *Client) SetLogger(logger resty.Logger) {
 func (c *Client) UpdateToken(token string) {
 	c.httpClient.SetHeader("Authorization", "Bearer "+token)
 	c.config.AccessToken = token
+	if c.config.OverwriteConfToken {
+		config.SaveConfig()
+	}
 }
 
 // makeRequest 统一的请求处理方法
