@@ -14,25 +14,24 @@
 
 ```
 dmxsmart-client/
-├── client.go              # 主客户端实现
+├── client.go               # 主客户端实现
 ├── client_test.go          # 测试文件
-├── encrypt.go              # RSA加密功能
 ├── config.yaml             # 配置文件
 ├── config.yaml.example     # 配置文件示例
 ├── go.mod                  # Go模块文件
 ├── config/                 # 配置管理
 ├── service/                # 服务层
-│   ├── auth.go            # 认证服务
-│   ├── pickup.wave.order.go # 拣货波次订单服务
-│   ├── client.go          # HTTP客户端
-│   ├── manager.go         # 服务管理器
-│   └── encrypt.go         # 加密服务
+│   ├── auth.go             # 认证服务
+│   ├── pickup.wave.go      # 拣货波次订单服务
+│   ├── client.go           # HTTP客户端
+│   ├── manager.go          # 服务管理器
+│   └── encrypt.go          # 加密服务
 ├── model/                  # 数据模型
-│   ├── auth.go            # 认证相关模型
-│   ├── pickup.wave.order.go # 拣货订单相关模型
-│   └── response.go        # 响应模型
+│   ├── auth.go             # 认证相关模型
+│   ├── pickup.wave.go      # 拣货订单相关模型
+│   └── response.go         # 响应模型
 ├── ocr/                    # OCR功能
-│   └── captcha.ocr.go     # 验证码识别
+│   └── captcha.ocr.go      # 验证码识别
 ├── logger/                 # 日志管理
 └── logs/                   # 日志文件目录
 ```
