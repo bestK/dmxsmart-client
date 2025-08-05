@@ -8,3 +8,4 @@ customer_ids:
 ocr_endpoint: 
 timeout: 30
 debug: false
+overwrite_conf_token: true

@@ -65,6 +65,7 @@ customer_ids: # 客户ID列表
 ocr_endpoint: https://ddddocr.xxxx.com/ocr_base64 # OCR服务端点
 timeout: 30 # 请求超时时间（秒）
 debug: false # 是否开启调试模式
+overwrite_conf_token: true # 是否登录后更新 config.yaml 的 token
 ```
 
 ## 使用方法
