@@ -19,7 +19,7 @@ func NewPickupWaveService(client *Client) *PickupWaveService {
 }
 
 // GetWaitingPickOrders retrieves the list of waiting pick orders
-func (s *PickupWaveService) GetWaitingPickOrders(page, pageSize int, customerIds []int) (*model.WaitingPickOrderResponse, error) {
+func (s *PickupWaveService) GetWaitingPickOrders(page, pageSize int, customerIds []int, keyword string) (*model.WaitingPickOrderResponse, error) {
 	urlStr := "/api/tenant/outbound/pickupwave/listWaitingPickOrder"
 
 	params := url.Values{}
@@ -28,7 +28,7 @@ func (s *PickupWaveService) GetWaitingPickOrders(page, pageSize int, customerIds
 	params.Set("warehouseId", fmt.Sprintf("%d", s.client.config.WarehouseID))
 	params.Set("keywordType", "referenceId")
 	params.Set("timeType", "createTime")
-	params.Set("keyword", "")
+	params.Set("keyword", keyword)
 
 	for _, customerId := range customerIds {
 		params.Add("customerIds[]", fmt.Sprintf("%d", customerId))
@@ -36,9 +36,13 @@ func (s *PickupWaveService) GetWaitingPickOrders(page, pageSize int, customerIds
 
 	fullURL := fmt.Sprintf("%s?%s", urlStr, params.Encode())
 
+	body := map[string]interface{}{
+		"keyword": keyword,
+	}
+
 	var result model.WaitingPickOrderResponse
 
-	err := s.client.makeRequest(http.MethodGet, fullURL, nil, &result)
+	err := s.client.makeRequest(http.MethodPost, fullURL, body, &result)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get waiting pick orders: %w", err)

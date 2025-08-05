@@ -62,7 +62,7 @@ func TestGetWaitingPickOrders(t *testing.T) {
 		t.Fatalf("Failed to create DMXSmartClient: %v", err)
 	}
 
-	resp, err := client.services.PickupWave.GetWaitingPickOrders(1, 20, config.GlobalConfig.CustomerIDs)
+	resp, err := client.services.PickupWave.GetWaitingPickOrders(1, 20, config.GlobalConfig.CustomerIDs, "")
 	if err != nil {
 		t.Errorf("GetWaitingPickOrders() error = %v", err)
 		return
