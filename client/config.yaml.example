@@ -1,0 +1,10 @@
+account: 
+password: 
+access_token: 
+warehouse_id: 
+customer_ids:
+    - 37046
+    - 4040
+ocr_endpoint: 
+timeout: 30
+debug: false
