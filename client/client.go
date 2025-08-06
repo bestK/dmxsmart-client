@@ -10,8 +10,8 @@ import (
 
 // DMXSmartClient
 type DMXSmartClient struct {
-	services *service.Services
-	config   *config.ConfigStruct
+	Services *service.Services
+	Config   *config.ConfigStruct
 }
 
 // NewDMXSmartClient 创建新的DMXSmart客户端
@@ -35,8 +35,8 @@ func NewDMXSmartClient(configPath string) (*DMXSmartClient, error) {
 	services.SetLogger(logger.Logger)
 
 	return &DMXSmartClient{
-		services: services,
-		config:   cfg,
+		Services: services,
+		Config:   cfg,
 	}, nil
 }
 
@@ -57,7 +57,7 @@ func NewDMXSmartClientWithConfig(cfg *config.ConfigStruct) (*DMXSmartClient, err
 	services.SetLogger(logger.Logger)
 
 	return &DMXSmartClient{
-		services: services,
-		config:   cfg,
+		Services: services,
+		Config:   cfg,
 	}, nil
 }

@@ -16,7 +16,7 @@ func TestLoginWithAutoOCR(t *testing.T) {
 	}
 
 	// 执行登录测试
-	resp, err := client.services.Auth.LoginWithAutoOCR()
+	resp, err := client.Services.Auth.LoginWithAutoOCR()
 	if err != nil {
 		t.Errorf("LoginWithAutoOCR() error = %v", err)
 		return
@@ -45,7 +45,7 @@ func TestValidateSession(t *testing.T) {
 		t.Fatalf("Failed to create DMXSmartClient: %v", err)
 	}
 
-	err = client.services.Auth.ValidateSession()
+	err = client.Services.Auth.ValidateSession()
 	if err != nil {
 		t.Errorf("ValidateSession() error = %v", err)
 		return
@@ -62,7 +62,7 @@ func TestGetWaitingPickOrders(t *testing.T) {
 		t.Fatalf("Failed to create DMXSmartClient: %v", err)
 	}
 
-	resp, err := client.services.PickupWave.GetWaitingPickOrders(1, 20, config.GlobalConfig.CustomerIDs, "")
+	resp, err := client.Services.PickupWave.GetWaitingPickOrders(1, 20, config.GlobalConfig.CustomerIDs, "")
 	if err != nil {
 		t.Errorf("GetWaitingPickOrders() error = %v", err)
 		return
@@ -79,7 +79,7 @@ func TestCreatePickupWave(t *testing.T) {
 		t.Fatalf("Failed to create DMXSmartClient: %v", err)
 	}
 
-	resp, err := client.services.PickupWave.CreatePickupWave(true, 1, true, config.GlobalConfig.CustomerIDs, "[BOT]")
+	resp, err := client.Services.PickupWave.CreatePickupWave(true, 1, true, config.GlobalConfig.CustomerIDs, "[BOT]")
 	if err != nil {
 		t.Errorf("CreatePickupWave() error = %v", err)
 		return
